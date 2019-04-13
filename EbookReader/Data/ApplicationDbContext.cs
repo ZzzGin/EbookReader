@@ -13,10 +13,10 @@ namespace EbookReader.Data
             : base(options)
         {
         }
-        public DbSet<BookModel> BookDbSet { get; set; }
-        public DbSet<BookShelfModel> BookShelfDbSet { get; set; }
-        public DbSet<CommentModel> CommentDbSet { get; set; }
-        public DbSet<NoteModel> NoteDbSet { get; set; }
+        public DbSet<Book> BookDbSet { get; set; }
+        public DbSet<BookShelf> BookShelfDbSet { get; set; }
+        public DbSet<Comment> CommentDbSet { get; set; }
+        public DbSet<Note> NoteDbSet { get; set; }
         public DbSet<JoinBookShelfBook> JoinBookShelfBookDbSet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

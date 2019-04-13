@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EbookReader.Models
 {
-    public class BookShelfModel
+    public class BookShelf
     {
         public Guid Id { get; set; }
         public string BookShelfName { get; set; }

@@ -8,9 +8,9 @@ namespace EbookReader.Models
     public class JoinBookShelfBook
     {
         public Guid BookShelfId { get; set; }
-        public BookShelfModel BookShelf { get; set; }
+        public BookShelf BookShelf { get; set; }
 
         public Guid BookId { get; set; }
-        public BookModel Book { get; set; }
+        public Book Book { get; set; }
     }
 }

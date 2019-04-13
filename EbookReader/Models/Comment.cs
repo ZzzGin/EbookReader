@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EbookReader.Models
 {
-    public class CommentModel
+    public class Comment
     {
         public int Id { get; set; }
         public byte RecommendationStars { get; set; }
@@ -17,6 +17,6 @@ namespace EbookReader.Models
         public IdentityUser CreateByUser { get; set; }
 
         public Guid BookId { set; get; }
-        public BookModel Book { set; get; }
+        public Book Book { set; get; }
     }
 }
