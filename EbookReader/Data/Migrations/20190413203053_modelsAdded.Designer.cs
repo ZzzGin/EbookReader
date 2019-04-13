@@ -4,14 +4,16 @@ using EbookReader.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EbookReader.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190413203053_modelsAdded")]
+    partial class modelsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +30,8 @@ namespace EbookReader.Data.Migrations
 
                     b.Property<string>("BookName");
 
+                    b.Property<Guid?>("BookShelfModelId");
+
                     b.Property<string>("Path");
 
                     b.Property<string>("UploadedByUserId");
@@ -35,6 +39,8 @@ namespace EbookReader.Data.Migrations
                     b.Property<DateTime>("UploadedDateTime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookShelfModelId");
 
                     b.HasIndex("UploadedByUserId");
 
@@ -48,13 +54,15 @@ namespace EbookReader.Data.Migrations
 
                     b.Property<string>("BookShelfName");
 
-                    b.Property<string>("CreateByUserId");
-
                     b.Property<string>("Description");
+
+                    b.Property<Guid>("UserId");
+
+                    b.Property<string>("UserId1");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreateByUserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("BookShelfDbSet");
                 });
@@ -69,7 +77,9 @@ namespace EbookReader.Data.Migrations
 
                     b.Property<string>("CommentContent");
 
-                    b.Property<string>("CreateByUserId");
+                    b.Property<Guid>("CreateByUserId");
+
+                    b.Property<string>("CreateByUserId1");
 
                     b.Property<DateTime>("CreateDateTime");
 
@@ -79,22 +89,9 @@ namespace EbookReader.Data.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("CreateByUserId");
+                    b.HasIndex("CreateByUserId1");
 
                     b.ToTable("CommentDbSet");
-                });
-
-            modelBuilder.Entity("EbookReader.Models.JoinBookShelfBook", b =>
-                {
-                    b.Property<Guid>("BookId");
-
-                    b.Property<Guid>("BookShelfId");
-
-                    b.HasKey("BookId", "BookShelfId");
-
-                    b.HasIndex("BookShelfId");
-
-                    b.ToTable("JoinBookShelfBookDbSet");
                 });
 
             modelBuilder.Entity("EbookReader.Models.NoteModel", b =>
@@ -106,7 +103,9 @@ namespace EbookReader.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<string>("CreateByUserId");
+                    b.Property<Guid>("CreateByUserId");
+
+                    b.Property<string>("CreateByUserId1");
 
                     b.Property<string>("Location");
 
@@ -116,7 +115,7 @@ namespace EbookReader.Data.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("CreateByUserId");
+                    b.HasIndex("CreateByUserId1");
 
                     b.ToTable("NoteDbSet");
                 });
@@ -288,6 +287,10 @@ namespace EbookReader.Data.Migrations
 
             modelBuilder.Entity("EbookReader.Models.BookModel", b =>
                 {
+                    b.HasOne("EbookReader.Models.BookShelfModel")
+                        .WithMany("Books")
+                        .HasForeignKey("BookShelfModelId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UploadedByUser")
                         .WithMany()
                         .HasForeignKey("UploadedByUserId");
@@ -295,9 +298,9 @@ namespace EbookReader.Data.Migrations
 
             modelBuilder.Entity("EbookReader.Models.BookShelfModel", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreateByUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("CreateByUserId");
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("EbookReader.Models.CommentModel", b =>
@@ -309,20 +312,7 @@ namespace EbookReader.Data.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreateByUser")
                         .WithMany()
-                        .HasForeignKey("CreateByUserId");
-                });
-
-            modelBuilder.Entity("EbookReader.Models.JoinBookShelfBook", b =>
-                {
-                    b.HasOne("EbookReader.Models.BookModel", "Book")
-                        .WithMany("JoinBookShelfBooks")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EbookReader.Models.BookShelfModel", "BookShelf")
-                        .WithMany("JoinBookShelfBooks")
-                        .HasForeignKey("BookShelfId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreateByUserId1");
                 });
 
             modelBuilder.Entity("EbookReader.Models.NoteModel", b =>
@@ -334,7 +324,7 @@ namespace EbookReader.Data.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreateByUser")
                         .WithMany()
-                        .HasForeignKey("CreateByUserId");
+                        .HasForeignKey("CreateByUserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
