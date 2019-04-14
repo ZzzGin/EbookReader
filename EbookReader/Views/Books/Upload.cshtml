@@ -1,0 +1,19 @@
+﻿@model EbookReader.Models.ViewModels.UploadBookViewModel
+
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h1>Upload</h1>
+
+<form asp-action="Upload" enctype="multipart/form-data">
+    <div>
+        <input type="text" asp-for="BookName"/>
+    </div>
+    <div>
+        <input type="file" asp-for="BookFile" />
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+</form>

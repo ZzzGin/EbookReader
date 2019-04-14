@@ -21,8 +21,6 @@ namespace EbookReader.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<JoinBookShelfBook>()
-                .HasKey(t => new {t.BookId, t.BookShelfId});
             base.OnModelCreating(modelBuilder);
 
         }
